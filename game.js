@@ -72,7 +72,6 @@ class SnakeGame {
 
   verifyGameOver(trailX, trailY) {
     if((this.positionX == trailX && this.positionY == trailY && this.tail > 5) || (this.positionX >= this.obstacleX && this.positionX < this.obstacleX + 2 && this.positionY >= this.obstacleY && this.positionY < this.obstacleY + 2)) {
-      
       if(this.speedX > 0) {
         this.positionX--
       } else if (this.speedX < 0) {
@@ -109,7 +108,6 @@ class SnakeGame {
     this.positionY += this.speedY
 
     this.changeDirection()
-
     this.drawMap(this.context)
     this.drawApple(this.context)
     this.drawObstacles(this.context)
