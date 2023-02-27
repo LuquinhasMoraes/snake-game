@@ -1,11 +1,15 @@
 
 class SnakeGame {
+  turnIA = 1
+  turnIACont = 1
+  xPesoIA = 1
+  yPesoIA = 1
   currentObstacleX = -1
   speed = 1
   speedX = 0
   speedY = 0
   positionX = 10
-  positionY = 15
+  positionY = 29
   obstacleX = 20
   obstacleY = 20
   lengthPart = 20
@@ -13,14 +17,13 @@ class SnakeGame {
   appleX = 10
   appleY = 10
   trail = []
-  tail = 5
+  tail = 10
   score = 0
   highscore = 0
   context = document.getElementById('game').getContext('2d')
 
   constructor() {
     let highscore = localStorage.getItem('highscore')
-
     document.getElementById('highscore').innerHTML = highscore ? highscore : 0
   }
 
@@ -30,8 +33,8 @@ class SnakeGame {
   }
 
   drawRandomApple() {
-    let X = Math.floor(Math.random() * this.lengthPart)
-    let Y = Math.floor(Math.random() * this.lengthPart)
+    let X = Math.floor(Math.random() * this.qtdPart)
+    let Y = Math.floor(Math.random() * this.qtdPart)
 
     const conflit = this.trail.filter(t => t.x === X && t.y === Y).length > 0
 
@@ -81,12 +84,12 @@ class SnakeGame {
     if(this.score > this.highscore) {
       localStorage.setItem('highscore', this.score)
       document.getElementById('highscore').innerHTML = this.score
+      this.score = 0
     }
   }
 
   setScore() {
     this.score++
-    console.log(this.score);
     document.getElementById('score').innerHTML = this.score
   }
 
@@ -134,34 +137,131 @@ class SnakeGame {
     this.drawApple(this.context)
     // this.drawObstacles(this.context)
     this.drawSnake(this.context)
+    this.playerIA()
+  }
+
+  moveDown () {
+    if(this.speedY == 0) {
+      this.speedX = 0
+      this.speedY = this.speed
+    }
+  }
+
+  moveUp () {
+    if(this.speedY == 0) { 
+      this.speedX = 0
+      this.speedY = -this.speed
+    }
+  }
+
+  moveRight () {
+    if(this.speedX == 0) {
+      this.speedX = this.speed
+      this.speedY = 0
+    }
+  }
+
+  moveLeft () {
+    if(this.speedX == 0) {
+      this.speedX = -this.speed
+      this.speedY = 0
+    }
+  }
+
+  generateDistinctRandomNumber() {
+    let lastNumber
+
+    function made() {
+      let n = Math.floor(Math.random() * 5)
+      if(n == lastNumber) {
+        return made()
+      } else {
+        return n
+      }
+    }
+
+    lastNumber = made()
+    console.log(lastNumber);
+    return lastNumber
+  }
+  
+  playerIA() {
+    if(this.turnIA > 30) this.turnIA = 1
+    let preOutput
+
+    console.log(this.positionX, this.positionY, this.turnIA);
+
+    if(this.positionX == this.qtdPart - 1 && this.positionY == this.qtdPart - (!(this.turnIA % 2 == 0) ? this.turnIA - 1 : this.turnIA)) {
+      preOutput = 2
+      this.moveUp()
+      setTimeout(this.moveLeft.bind(this), 1)
+      this.turnIA++
+      this.turnIACont++
+      console.log('if 1');
+    }
+    else if(this.positionX == 0 && this.positionY == this.qtdPart - (this.turnIA % 2 == 0 ? this.turnIA - 1 : this.turnIA)) {
+      preOutput = 2
+      this.moveUp()
+      setTimeout(this.moveRight.bind(this), 1)
+      this.turnIA++
+      this.turnIACont++
+      console.log('if 2');
+    } 
+    
+    // if(this.positionX == this.qtdPart - 2 && this.positionY == this.qtdPart - 2) {
+    //   preOutput = 2
+    //   this.moveUp()
+    //   setTimeout(this.moveLeft.bind(this), 100)
+    //   this.turnIA++
+    // }
+
+    // else if(this.positionY ==  this.turnIA && this.positionX !=  this.turnIA) {
+    //   preOutput = 1
+    // } else if( this.positionX ==  this.turnIA && this.positionY != this.qtdPart - 1 -  this.turnIA) {
+    //   preOutput = 4
+    // } else if (this.positionY == this.qtdPart - 1 -  this.turnIA) {
+    //   preOutput = 3
+    //   // this.turnIA++
+    // }
+
+    let output = preOutput
+
+    // switch (output) {
+    //   case 1:
+    //     this.moveLeft()
+    //     break;
+    //   case 2:
+    //     this.moveUp()
+    //     break;
+    //   case 3:
+    //     this.moveRight()
+    //     break;
+    //   case 4:
+    //     this.moveDown()
+    //     break;
+    // }
+    
   }
 
   start() {
-    setInterval(this.init.bind(this), 60)
+    setInterval(this.init.bind(this), 1)
+    // setInterval(this.playerIA.bind(this), 100)
     document.addEventListener('keydown', (event) => {
       switch (event.code) {
         case 'ArrowDown':
-          if(this.speedY == 0) {
-            this.speedX = 0
-            this.speedY = this.speed
-          }
+            this.moveDown()
           break;
         case 'ArrowUp':
-            if(this.speedY == 0) {
-              this.speedX = 0
-              this.speedY = -this.speed
-            }
+              this.moveUp()
             break;
         case 'ArrowRight':
           if(this.speedX == 0) {
-            this.speedX = this.speed
-            this.speedY = 0
+            this.moveRight()
           }
           break;
         case 'ArrowLeft':
           if(this.speedX == 0) {
-            this.speedX = -this.speed
-            this.speedY = 0
+            this.moveLeft()
           }
           break;
         default:
