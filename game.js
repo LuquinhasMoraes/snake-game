@@ -1,7 +1,6 @@
 
 class SnakeGame {
   turnIA = 1
-  turnIACont = 1
   xPesoIA = 1
   yPesoIA = 1
   currentObstacleX = -1
@@ -181,66 +180,22 @@ class SnakeGame {
     }
 
     lastNumber = made()
-    console.log(lastNumber);
     return lastNumber
   }
   
   playerIA() {
     if(this.turnIA > 30) this.turnIA = 1
-    let preOutput
-
-    console.log(this.positionX, this.positionY, this.turnIA);
-
+    
     if(this.positionX == this.qtdPart - 1 && this.positionY == this.qtdPart - (!(this.turnIA % 2 == 0) ? this.turnIA - 1 : this.turnIA)) {
-      preOutput = 2
       this.moveUp()
       setTimeout(this.moveLeft.bind(this), 1)
       this.turnIA++
-      this.turnIACont++
-      console.log('if 1');
     }
     else if(this.positionX == 0 && this.positionY == this.qtdPart - (this.turnIA % 2 == 0 ? this.turnIA - 1 : this.turnIA)) {
-      preOutput = 2
       this.moveUp()
       setTimeout(this.moveRight.bind(this), 1)
       this.turnIA++
-      this.turnIACont++
-      console.log('if 2');
     } 
-    
-    // if(this.positionX == this.qtdPart - 2 && this.positionY == this.qtdPart - 2) {
-    //   preOutput = 2
-    //   this.moveUp()
-    //   setTimeout(this.moveLeft.bind(this), 100)
-    //   this.turnIA++
-    // }
-
-    // else if(this.positionY ==  this.turnIA && this.positionX !=  this.turnIA) {
-    //   preOutput = 1
-    // } else if( this.positionX ==  this.turnIA && this.positionY != this.qtdPart - 1 -  this.turnIA) {
-    //   preOutput = 4
-    // } else if (this.positionY == this.qtdPart - 1 -  this.turnIA) {
-    //   preOutput = 3
-    //   // this.turnIA++
-    // }
-
-    let output = preOutput
-
-    // switch (output) {
-    //   case 1:
-    //     this.moveLeft()
-    //     break;
-    //   case 2:
-    //     this.moveUp()
-    //     break;
-    //   case 3:
-    //     this.moveRight()
-    //     break;
-    //   case 4:
-    //     this.moveDown()
-    //     break;
-    // }
-    
   }
 
   start() {
