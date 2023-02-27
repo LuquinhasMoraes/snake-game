@@ -1,4 +1,3 @@
-
 class SnakeGame {
   turnIA = 1
   xPesoIA = 1
