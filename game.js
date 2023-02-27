@@ -185,7 +185,7 @@ class SnakeGame {
   
   playerIA() {
     if(this.turnIA > 30) this.turnIA = 1
-    
+
     if(this.positionX == this.qtdPart - 1 && this.positionY == this.qtdPart - (!(this.turnIA % 2 == 0) ? this.turnIA - 1 : this.turnIA)) {
       this.moveUp()
       setTimeout(this.moveLeft.bind(this), 1)
@@ -200,24 +200,19 @@ class SnakeGame {
 
   start() {
     setInterval(this.init.bind(this), 1)
-    // setInterval(this.playerIA.bind(this), 100)
     document.addEventListener('keydown', (event) => {
       switch (event.code) {
         case 'ArrowDown':
-            this.moveDown()
+          this.moveDown()
           break;
         case 'ArrowUp':
-              this.moveUp()
-            break;
+          this.moveUp()
+          break;
         case 'ArrowRight':
-          if(this.speedX == 0) {
-            this.moveRight()
-          }
+          this.moveRight()
           break;
         case 'ArrowLeft':
-          if(this.speedX == 0) {
-            this.moveLeft()
-          }
+          this.moveLeft()
           break;
         default:
           break;
